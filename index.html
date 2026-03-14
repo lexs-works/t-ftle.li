@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tüftle.li · coming soon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #fcfaf7;
+            --text: #1e1b1a;
+            --accent: #2d4a5b;
+            --accent-light: #e3e9ed;
+            --muted: #6b7a85;
+            --light: #e9e4db;
+            --white: #ffffff;
+            --font-serif: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', monospace;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            font-weight: 300;
+            font-size: 1.125rem;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 780px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .lang-tabs {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            justify-content: center;
+            border-bottom: 1px solid var(--light);
+            padding-bottom: 1rem;
+        }
+
+        .lang-tab {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .lang-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .lang-content {
+            display: none;
+        }
+
+        .lang-content.active {
+            display: block;
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 450;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 small {
+            font-size: 0.4em;
+            display: block;
+            color: var(--muted);
+            margin-top: 0.5rem;
+            font-family: var(--font-sans);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        .lead {
+            font-size: 1.4rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
+            border-left: 2px solid var(--light);
+            padding-left: 1.5rem;
+        }
+
+        .signup-form {
+            margin: 3rem 0 2rem;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid var(--light);
+            transition: opacity 0.3s;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        @media (min-width: 600px) {
+            .form-group {
+                flex-direction: row;
+            }
+        }
+
+        .email-input {
+            flex: 3;
+            padding: 1rem 1.2rem;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            border: 1px solid var(--light);
+            border-radius: 3rem;
+            background: var(--bg);
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .email-input:focus {
+            border-color: var(--accent);
+        }
+
+        .submit-btn {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 3rem;
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .submit-btn:hover {
+            background: #1d3845;
+        }
+
+        .form-note {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-top: 0.8rem;
+            font-style: italic;
+        }
+
+        .success-message {
+            background: var(--accent-light);
+            border: 1px solid var(--accent);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+        }
+
+        .success-message p {
+            margin-bottom: 1rem;
+        }
+
+        .success-message .small {
+            font-size: 1rem;
+            font-family: var(--font-sans);
+            color: var(--muted);
+        }
+
+        .bullet-list {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .bullet-list li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.8rem;
+            position: relative;
+        }
+
+        .bullet-list li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .quote {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            border-left: 4px solid var(--accent);
+            padding: 1rem 0 1rem 2rem;
+            margin: 2rem 0;
+            background: var(--white);
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        .highlight {
+            background: var(--accent-light);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin: 2rem 0;
+            border: 1px solid var(--accent);
+            font-style: italic;
+        }
+
+        .footer {
+            margin-top: 4rem;
+            font-size: 0.9rem;
+            color: var(--muted);
+            border-top: 1px solid var(--light);
+            padding-top: 2rem;
+            text-align: center;
+        }
+
+        .footer a {
+            color: var(--muted);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--muted);
+        }
+
+        .footer a:hover {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .mono {
+            font-family: var(--font-mono);
+            background: var(--light);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .gdpr-checkbox {
+            margin: 1rem 0;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .gdpr-checkbox input {
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+        }
+
+        .gdpr-checkbox label {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- language tabs -->
+        <div class="lang-tabs">
+            <div class="lang-tab active" onclick="switchLang('en')">🇬🇧 English</div>
+            <div class="lang-tab" onclick="switchLang('de')">🇩🇪 Deutsch</div>
+        </div>
+
+        <!-- ENGLISH VERSION -->
+        <div id="lang-en" class="lang-content active">
+            <h1>
+                tüftle.li
+                <small>— launching autumn 2026</small>
+            </h1>
+            
+            <p class="lead">A workshop for the curious mind. Systems thinking, code, science, and the art of asking better questions.</p>
+
+            <div class="quote">
+                “Tüfteln — to tinker, to improve with patience and precision. A place for those who still think for themselves.”
+            </div>
+
+            <div class="highlight">
+                ⚡ No AI‑generated content. Ever. Just honest, crafted thinking by a human who enjoys the process.
+            </div>
+
+            <p>This will be a quiet corner of the internet for those who:</p>
+
+            <ul class="bullet-list">
+                <li><span class="mono">think in systems</span> — architecture, business design, the structure of ideas</li>
+                <li><span class="mono">are curious about the mind</span> — AI, neuroscience, the nature of intelligence</li>
+                <li><span class="mono">look deeper</span> — science, history of science, longevity, and the question of immortality</li>
+                <li><span class="mono">appreciate craft</span> — clear writing, elegant code, and ideas that hold weight</li>
+            </ul>
+
+            <p>No algorithms. No noise. No content farms. Just one person, thinking out loud, and sharing what he finds.</p>
+
+            <!-- Subscription form (EN) -->
+            <div id="signup-form-en" class="signup-form">
+                <h3 style="font-family: var(--font-serif); margin-bottom: 1rem;">Be the first to know</h3>
+                <p style="margin-bottom: 1.5rem; color: var(--muted);">If this sounds like your kind of place — leave your email. You'll receive exactly one notification when the site launches.</p>
+                
+                <div class="form-group">
+                    <input type="email" id="email-en" placeholder="your@email.com" class="email-input" required>
+                    <button onclick="submitForm('en')" class="submit-btn">Subscribe</button>
+                </div>
+                
+                <!-- GDPR checkbox -->
+                <div class="gdpr-checkbox">
+                    <input type="checkbox" id="gdpr-en" required>
+                    <label for="gdpr-en">
+                        I consent to tüftle.li storing my email address for the sole purpose of notifying me about the launch. 
+                        I can withdraw my consent at any time. (<a href="/privacy" target="_blank">Privacy policy</a>)
+                    </label>
+                </div>
+                
+                <p class="form-note">No spam. No tracking. Unsubscribe anytime.</p>
+            </div>
+
+            <!-- Success message (EN) -->
+            <div id="success-en" class="success-message" style="display: none;">
+                <p>🙏 Thank you.</p>
+                <p>You're now on the list. You will receive a single notification when tüftle.li is ready.</p>
+                <p class="small">(A confirmation email is on its way. If it doesn't appear, check your spam folder.)</p>
+            </div>
+
+            <p style="text-align: right; font-style: italic;">— Lex</p>
+        </div>
+
+        <!-- GERMAN VERSION -->
+        <div id="lang-de" class="lang-content">
+            <h1>
+                tüftle.li
+                <small>— startet im Herbst 2026</small>
+            </h1>
+            
+            <p class="lead">Eine Werkstatt für neugierige Köpfe. Systemdenken, Code, Wissenschaft – und die Kunst, bessere Fragen zu stellen.</p>
+
+            <div class="quote">
+                “Tüfteln — mit Geduld und Präzision verbessern. Ein Ort für Menschen, die noch selbst denken.”
+            </div>
+
+            <div class="highlight">
+                ⚡ Keine KI‑generierten Inhalte. Niemals. Nur ehrliche, handgemachte Gedanken von einem Menschen, der den Prozess liebt.
+            </div>
+
+            <p>Hier entsteht ein ruhiger Ort im Netz für alle, die:</p>
+
+            <ul class="bullet-list">
+                <li><span class="mono">in Systemen denken</span> — Architektur, Business Design, die Struktur von Ideen</li>
+                <li><span class="mono">den Geist verstehen wollen</span> — KI, Neurowissenschaften, die Natur der Intelligenz</li>
+                <li><span class="mono">tiefer graben</span> — Wissenschaft, Wissenschaftsgeschichte, Langlebigkeit und die Frage nach der Unsterblichkeit</li>
+                <li><span class="mono">Handwerk schätzen</span> — klare Sprache, eleganter Code, Ideen mit Gewicht</li>
+            </ul>
+
+            <p>Keine Algorithmen. Kein Lärm. Keine Inhaltsfabriken. Nur ein Mensch, der laut denkt und teilt, was er findet.</p>
+
+            <!-- Subscription form (DE) -->
+            <div id="signup-form-de" class="signup-form">
+                <h3 style="font-family: var(--font-serif); margin-bottom: 1rem;">Als Erste(r) Bescheid wissen</h3>
+                <p style="margin-bottom: 1.5rem; color: var(--muted);">Wenn das nach deinem Ort klingt – trag deine Email ein. Du erhältst genau eine Benachrichtigung, wenn die Seite online geht.</p>
+                
+                <div class="form-group">
+                    <input type="email" id="email-de" placeholder="deine@email.de" class="email-input" required>
+                    <button onclick="submitForm('de')" class="submit-btn">Abonnieren</button>
+                </div>
+                
+                <!-- GDPR checkbox (German) -->
+                <div class="gdpr-checkbox">
+                    <input type="checkbox" id="gdpr-de" required>
+                    <label for="gdpr-de">
+                        Ich willige ein, dass tüftle.li meine E-Mail-Adresse speichert, um mich ausschliesslich über den Start zu informieren.
+                        Ich kann meine Einwilligung jederzeit widerrufen. (<a href="/datenschutz" target="_blank">Datenschutzerklärung</a>)
+                    </label>
+                </div>
+                
+                <p class="form-note">Kein Spam. Kein Tracking. Jederzeit kündbar.</p>
+            </div>
+
+            <!-- Success message (DE) -->
+            <div id="success-de" class="success-message" style="display: none;">
+                <p>🙏 Danke.</p>
+                <p>Du bist jetzt auf der Liste. Du wirst genau eine Benachrichtigung erhalten, wenn tüftle.li bereit ist.</p>
+                <p class="small">(Eine Bestätigungsemail ist unterwegs. Falls nicht, bitte im Spam-Ordner nachsehen.)</p>
+            </div>
+
+            <p style="text-align: right; font-style: italic;">— Lex</p>
+        </div>
+
+        <!-- footer -->
+        <div class="footer">
+            <p>✎ <span class="mono">tüftle.li</span> — a workshop in progress</p>
+            <p style="margin-top: 1rem;">
+                <a href="https://lexs.work">lexs.work</a> · 
+                <a href="https://lex.sale">lex.sale</a> · 
+                <a href="https://2puda.pro">2puda.pro</a>
+            </p>
+            <p style="margin-top: 1rem; font-size: 0.8rem;">
+                <a href="/privacy">Privacy</a> · 
+                <a href="/datenschutz">Datenschutz</a> · 
+                <a href="mailto:hello@tüftle.li">hello@tüftle.li</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // language switching
+        function switchLang(lang) {
+            document.querySelectorAll('.lang-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.lang-tab').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            document.getElementById('lang-' + lang).classList.add('active');
+            
+            document.querySelectorAll('.lang-tab').forEach(el => {
+                if ((lang === 'en' && el.textContent.includes('English')) || 
+                    (lang === 'de' && el.textContent.includes('Deutsch'))) {
+                    el.classList.add('active');
+                }
+            });
+        }
+
+        // form submission
+        async function submitForm(lang) {
+            const emailInput = document.getElementById(`email-${lang}`);
+            const gdprCheckbox = document.getElementById(`gdpr-${lang}`);
+            const email = emailInput.value.trim();
+            
+            if (!email || !email.includes('@')) {
+                alert(lang === 'en' ? 'Please enter a valid email.' : 'Bitte eine gültige Email eingeben.');
+                return;
+            }
+            
+            if (!gdprCheckbox.checked) {
+                alert(lang === 'en' 
+                    ? 'You must consent to the privacy policy.' 
+                    : 'Du musst der Datenschutzerklärung zustimmen.');
+                return;
+            }
+
+            // data for Form
+            const formData = {
+                email: email,
+                lang: lang,
+                timestamp: new Date().toISOString(),
+                source: 'tüftle.li',
+                userAgent: navigator.userAgent,
+                consent: true,
+                consentTimestamp: new Date().toISOString()
+            };
+
+            try {
+                // Send to form endpoint
+                const formResponse = await fetch('https://wssr.xn--tftle-kva.li/api/forms/t-ftle-li-subscribers/submissions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!formResponse.ok) {
+                    throw new Error('Form submission error');
+                }
+
+                // Send email via Worker
+                const emailResponse = await fetch('https://emrrr.xn--tftle-kva.li', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, lang })
+                });
+
+                const result = await emailResponse.json();
+
+                // hide form, show success
+                document.getElementById(`signup-form-${lang}`).style.display = 'none';
+                document.getElementById(`success-${lang}`).style.display = 'block';
+
+                if (!result.success) {
+                    console.warn('Email sending failed, but data saved');
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert(lang === 'en' 
+                    ? 'Network error. Please check your connection or email me directly.' 
+                    : 'Netzwerkfehler. Bitte Verbindung prüfen oder schreib mir direkt.');
+            }
+        }
+    </script>
+</body>
+</html>
